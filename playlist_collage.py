@@ -7,8 +7,7 @@ import random
 import shutil
 import spotipy.util as util
 
-#hello this
-
+#
 class Album:
     def __init__(self, album_name, album_artist, uri, img_url):
         self.album_name = album_name
