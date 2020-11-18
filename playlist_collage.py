@@ -7,7 +7,6 @@ import random
 import shutil
 import spotipy.util as util
 
-#
 class Album:
     def __init__(self, album_name, album_artist, uri, img_url):
         self.album_name = album_name
@@ -19,13 +18,15 @@ class Album:
         return self.album_name + ' - ' + self.album_artist 
 
 class SpotAPI:
-        
+    
+    #begin downloading image
     def download_album_img(self, url, outputname, base_address):
         img_data = requests.get(url).content
         address =  base_address + outputname + '.jpg'
 
         with open(address, 'wb') as handler:
             handler.write(img_data)
+    #end download image
 
     #begin image download
     def download_images(self, playlist, albums_list, base_address):
@@ -35,7 +36,8 @@ class SpotAPI:
                 self.download_album_img(playlist[i].img_url, str(i), base_address)
                 albums_list.remove(playlist[i].album_name)
     #end image download
-
+    
+    #begin finding playlists
     def find_user_playlists(self, sp):
         print('Here are you Spotify Playlists:')
         print('-------------------------------')
@@ -43,6 +45,7 @@ class SpotAPI:
         for i, item in enumerate(results['items']):
             print("%d %s" % (i, item['name']))
         return results
+    #end finding playlists
 
     #begin make collage
     def make_album_collage(self, base_address, playlist_name):
@@ -82,10 +85,6 @@ class SpotAPI:
     #end selecting your playlist
 
 def main():
-
-    #auth_manager = SpotifyClientCredentials(client_secret= "14fd1f993ca34e00b6b28233ef3b71aa", client_id="c1b2e5c1f56a45c38ce8b680ab6e643e")
-    #sp = spotipy.Spotify(auth_manager=auth_manager)
-
     token = util.prompt_for_user_token(
              '1242158203', 
              '', 
@@ -104,6 +103,8 @@ def main():
     
     playlist_items = sp.playlist(pl_id, fields="tracks,next,name")
     playlist_name = playlist_items['name']
+    
+    #map this address to the area you want your collage
     base_address = 'C:\\Users\\Joey\\Desktop\\{}\\'.format(playlist_name)
     os.makedirs(base_address)
 
